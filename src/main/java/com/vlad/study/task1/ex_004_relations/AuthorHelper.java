@@ -5,8 +5,8 @@ import com.vlad.study.task1.ex_004_relations.entity.Author ;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import jakarta.persistence.Query;
-import jakarta.persistence.criteria.*;
+import javax.persistence.Query;
+import javax.persistence.criteria.*;
 import java.util.List;
 
 /**

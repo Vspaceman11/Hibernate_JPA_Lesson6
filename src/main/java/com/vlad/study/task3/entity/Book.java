@@ -1,4 +1,4 @@
-package com.vlad.study.task2.ex_003_delete.entity;
+package com.vlad.study.task3.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

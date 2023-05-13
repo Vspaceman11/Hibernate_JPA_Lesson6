@@ -1,6 +1,6 @@
 package com.vlad.study.task2.ex_003_delete.entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 public class Author {

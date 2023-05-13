@@ -1,8 +1,7 @@
-package com.vlad.study.task1.ex_004_relations.entity;
+package com.vlad.study.task3.entity;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Entity
 public class Author {
@@ -10,14 +9,11 @@ public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "name")
+
     private String name;
 
     @Column(name = "last_name")
     private String lastName;
-
-    @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
-    private List<Book> books = new ArrayList<Book>();
 
     public Author(String name) {
         this.name = name;
@@ -27,9 +23,9 @@ public class Author {
 
     }
 
-    public Author(String name, String lastName) {
+    public Author(long id, String name) {
+         this.id = id;
          this.name = name;
-         this.lastName = lastName;
     }
 
     public String getLastName() {
@@ -56,20 +52,4 @@ public class Author {
         this.name = name;
     }
 
-    public List<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(List<Book> books) {
-        this.books = books;
-    }
-
-    @Override
-    public String toString() {
-        return "Author{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", lastName='" + lastName + '\'' +
-                '}';
-    }
 }

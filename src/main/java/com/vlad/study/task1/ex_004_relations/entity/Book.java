@@ -1,6 +1,6 @@
 package com.vlad.study.task1.ex_004_relations.entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 public class Book {

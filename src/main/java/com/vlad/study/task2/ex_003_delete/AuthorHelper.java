@@ -5,8 +5,8 @@ import com.vlad.study.task2.ex_003_delete.entity.Author;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import jakarta.persistence.Query;
-import jakarta.persistence.criteria.*;
+import javax.persistence.Query;
+import javax.persistence.criteria.*;
 import java.util.List;
 
 /**
@@ -30,7 +30,7 @@ public class AuthorHelper {
         // объект-конструктор запросов для Criteria API
         CriteriaBuilder cb = session.getCriteriaBuilder();// не использовать session.createCriteria, т.к. deprecated
 
-        CriteriaQuery cq = cb.createQuery(Author.class);
+        CriteriaQuery<Author> cq = cb.createQuery(Author.class);
 
         Root<Author> root = cq.from(Author.class);// первостепенный, корневой entity (в sql запросе - from)
 

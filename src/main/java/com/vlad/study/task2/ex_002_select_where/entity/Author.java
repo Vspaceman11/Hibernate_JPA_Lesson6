@@ -1,6 +1,6 @@
 package com.vlad.study.task2.ex_002_select_where.entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 
 @Entity

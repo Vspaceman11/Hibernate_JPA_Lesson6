@@ -6,12 +6,11 @@ import com.vlad.study.task1.ex_004_relations.entity.Book ;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import jakarta.persistence.Query;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
-import org.hibernate.query.MutationQuery;
-import org.hibernate.query.SelectionQuery;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 
 import java.util.List;
 
@@ -55,7 +54,7 @@ public class BookHelper {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-         session.createMutationQuery("delete Book where author_id =" +
+         session.createQuery("delete Book where author_id =" +
                          " (SELECT id from Author where name =:authorFirstName and lastName =:authorLastName)")
                  .setParameter("authorFirstName", authorFirstName)
                  .setParameter("authorLastName", authorLastName)
