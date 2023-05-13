@@ -1,0 +1,152 @@
+package com.vlad.study.task3;
+
+
+import com.vlad.study.task3.entity.Author;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+
+import javax.persistence.Query;
+import javax.persistence.criteria.*;
+import java.util.List;
+
+/**
+ * Created by Asus on 01.11.2017.
+ */
+public class AuthorHelper {
+
+    private SessionFactory sessionFactory;
+
+    public AuthorHelper() {
+        sessionFactory = HibernateUtil.getSessionFactory();
+    }
+
+    public List<Author> getAuthorList(){
+        // открыть сессию - для манипуляции с персист. объектами
+        Session session = sessionFactory.openSession();
+
+
+        // этап подготовки запроса
+
+        // объект-конструктор запросов для Criteria API
+        CriteriaBuilder cb = session.getCriteriaBuilder();// не использовать session.createCriteria, т.к. deprecated
+
+        CriteriaQuery<Author> cq = cb.createQuery(Author.class);
+
+        Root<Author> root = cq.from(Author.class);// первостепенный, корневой entity (в sql запросе - from)
+
+        Selection[] selections = {root.get("id"), root.get("name")};
+
+        cq.select(cb.construct(Author.class, selections));
+
+
+         //этап выполнения запроса
+        Query query = session.createQuery(cq);
+
+
+        List<Author> authorList = query.getResultList();
+
+        session.close();
+
+        return authorList;
+    }
+
+    public Author getAuthorById(long id) {
+        Session session = sessionFactory.openSession();
+        Author author = session.get(Author.class, id); // получение объекта по id
+        session.close();
+        return author;
+    }
+
+    public Author addAuthor(Author author){
+
+        Session session = sessionFactory.openSession();
+
+        session.beginTransaction();
+
+        session.persist(author); // сгенерит ID и вставит в объект
+
+        session.getTransaction().commit();
+
+        session.close();
+
+
+        return author;
+
+    }
+
+    public void deleteById(long id) {
+        Session session = sessionFactory.openSession();
+
+        session.beginTransaction();
+
+        Author author = session.get(Author.class, id);
+
+        session.remove(author); // сгенерит ID и вставит в объект
+
+        session.getTransaction().commit();
+
+        session.close();
+
+    }
+
+    public void updateCriteria()  {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+
+        // этап подготовки запроса
+
+        // объект-конструктор запросов для Criteria API
+        CriteriaBuilder cb = session.getCriteriaBuilder();// не использовать session.createCriteria, т.к. deprecated
+
+        CriteriaUpdate<Author> cu = cb.createCriteriaUpdate(Author.class);
+
+        Root<Author> root = cu.from(Author.class);// первостепенный, корневой entity (в sql запросе - from)
+
+        cu.set("name", "1");
+        cu.where(cb.like(root.get("lastName"), "_______%"));
+
+        //этап выполнения запроса
+
+        int executedUpdate = session.createQuery(cu).executeUpdate();
+
+        System.out.println("Updated values: " + executedUpdate);
+        session.getTransaction().commit();
+
+        session.close();
+    }
+
+    public void deleteCriteriaLogic()  {
+        Session session = sessionFactory.openSession();
+
+        session.beginTransaction();
+
+        // этап подготовки запроса
+
+        // объект-конструктор запросов для Criteria API
+        CriteriaBuilder cb = session.getCriteriaBuilder();// не использовать session.createCriteria, т.к. deprecated
+
+        CriteriaDelete<Author> cd = cb.createCriteriaDelete(Author.class);
+
+        Root<Author> root = cd.from(Author.class);
+
+        cd.where(cb.or(
+                cb.and(
+                        cb.like(root.get("name"), "%author%"),
+                        cb.like(root.get("lastName"), "%2%")
+                ),
+                cb.equal(root.get("lastName"), "Lermontov")
+        ));
+
+
+        //этап выполнения запроса
+        Query query = session.createQuery(cd);
+        int deletedValues = query.executeUpdate();
+        System.out.println("Deleted values: " + deletedValues);
+
+        session.getTransaction().commit();
+
+        session.close();
+    }
+
+}
